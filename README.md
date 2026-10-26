@@ -13,14 +13,14 @@ These are portable applications, not the Windows Setup installer. Read START_HER
 
 Download the management application's Linux deployment kits from [GitHub Releases](https://github.com/JackKelley805/TKCM_Releases/releases).
 
-## Management Application v0.1.1
+## Management Application v0.1.2
 
-- [Linux `.tar.gz` deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/management_application-0.1.1.tar.gz)
-- [ZIP deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/management_application-0.1.1.zip)
-- [SHA256 checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/SHA256SUMS)
-- [Release manifest](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/RELEASE-MANIFEST.json)
+- [Linux `.tar.gz` deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/management_application-0.1.2.tar.gz)
+- [ZIP deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/management_application-0.1.2.zip)
+- [SHA256 checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/SHA256SUMS)
+- [Release manifest](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/RELEASE-MANIFEST.json)
 
-The kit contains the combined management application's source, Linux installer, Docker/Compose files, RDS configuration example, and setup documentation. Docker builds the application on the server; no host .NET SDK is required. Version 0.1.1 adds direct license revoke/delete actions, installation-entry deletion, and timing-policy settings in hours.
+The kit contains the combined management application's source, Linux installer, Docker/Compose files, RDS configuration example, and setup documentation. Docker builds the application on the server; no host .NET SDK is required. Version 0.1.2 adds encrypted, on-demand license key viewing and copying, fixes the sidebar navigation jump, and adds an MA browser-tab icon.
 
 ## Update an existing Linux server
 
@@ -30,20 +30,20 @@ The kit contains the combined management application's source, Linux installer, 
   management_install_dir=/opt/management_application
   update_dir=$(mktemp -d "$HOME/tkcm-management-update.XXXXXX")
   cd "$update_dir"
-  curl --fail --location --output management_application-0.1.1.tar.gz \
-    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/management_application-0.1.1.tar.gz'
+  curl --fail --location --output management_application-0.1.2.tar.gz \
+    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/management_application-0.1.2.tar.gz'
   curl --fail --location --output SHA256SUMS \
-    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/SHA256SUMS'
+    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/SHA256SUMS'
   sha256sum --check --ignore-missing SHA256SUMS
-  tar -xzf management_application-0.1.1.tar.gz
-  cd management_application-0.1.1
+  tar -xzf management_application-0.1.2.tar.gz
+  cd management_application-0.1.2
   sudo test -f "$management_install_dir/.management-install"
   sudo bash install.sh --install-dir "$management_install_dir"
   sudo docker compose --env-file "$management_install_dir/.env" --project-directory "$management_install_dir" -f "$management_install_dir/compose.yaml" ps
 )
 ```
 
-These commands use the default managed installation directory, `/opt/management_application`; substitute your existing directory if different. The installer retains saved settings, database mode, accounts/passwords, licenses, policy durations, and signing/authentication keys. Updating does not require entering credentials again.
+These commands use the default managed installation directory, `/opt/management_application`; substitute your existing directory if different. The installer retains saved settings, database mode, accounts/passwords, licenses, policy durations, and signing/authentication keys. Updating does not require entering credentials again. Preserve the existing `/data/keys/` authentication-key ring: it also decrypts saved license keys. Older hash-only keys become viewable after their next successful validation; an explicit replacement invalidates the previous key while retaining installation entries.
 
 For a fresh server, read the extracted `README.md` and `RELEASE-INFO.md`. Prepare a dedicated MySQL/RDS database, private password file, and CA certificate, then run:
 
