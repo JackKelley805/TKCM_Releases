@@ -13,14 +13,14 @@ These are portable applications, not the Windows Setup installer. Read START_HER
 
 Download the management application's Linux deployment kits from [GitHub Releases](https://github.com/JackKelley805/TKCM_Releases/releases).
 
-## Management Application v0.1.2
+## Management Application v0.1.3
 
-- [Linux `.tar.gz` deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/management_application-0.1.2.tar.gz)
-- [ZIP deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/management_application-0.1.2.zip)
-- [SHA256 checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/SHA256SUMS)
-- [Release manifest](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/RELEASE-MANIFEST.json)
+- [Linux `.tar.gz` deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.3/management_application-0.1.3.tar.gz)
+- [ZIP deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.3/management_application-0.1.3.zip)
+- [SHA256 checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.3/SHA256SUMS)
+- [Release manifest](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.3/RELEASE-MANIFEST.json)
 
-The kit contains the combined management application's source, Linux installer, Docker/Compose files, RDS configuration example, and setup documentation. Docker builds the application on the server; no host .NET SDK is required. Version 0.1.2 adds encrypted, on-demand license key viewing and copying, fixes the sidebar navigation jump, and adds an MA browser-tab icon.
+The kit contains the combined management application's source, Linux installer, Docker/Compose files, RDS configuration example, and setup documentation. Docker builds the application on the server; no host .NET SDK is required. Version 0.1.3 adds `POST /api/v1/installations/version`. Send the existing installation bearer token with JSON `{"version":"1.2.3"}` to update that installation's running version and last contact. The response contains `installation_id`, `version`, and `reported_at`; valid SemVer is required. Reporting never renews license validation or extends offline access. Existing heartbeat version reports remain supported, and this endpoint requires no schema change.
 
 ## Update an existing Linux server
 
@@ -30,13 +30,13 @@ The kit contains the combined management application's source, Linux installer, 
   management_install_dir=/opt/management_application
   update_dir=$(mktemp -d "$HOME/tkcm-management-update.XXXXXX")
   cd "$update_dir"
-  curl --fail --location --output management_application-0.1.2.tar.gz \
-    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/management_application-0.1.2.tar.gz'
+  curl --fail --location --output management_application-0.1.3.tar.gz \
+    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.3/management_application-0.1.3.tar.gz'
   curl --fail --location --output SHA256SUMS \
-    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.2/SHA256SUMS'
+    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.3/SHA256SUMS'
   sha256sum --check --ignore-missing SHA256SUMS
-  tar -xzf management_application-0.1.2.tar.gz
-  cd management_application-0.1.2
+  tar -xzf management_application-0.1.3.tar.gz
+  cd management_application-0.1.3
   sudo test -f "$management_install_dir/.management-install"
   sudo bash install.sh --install-dir "$management_install_dir"
   sudo docker compose --env-file "$management_install_dir/.env" --project-directory "$management_install_dir" -f "$management_install_dir/compose.yaml" ps
