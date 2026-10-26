@@ -13,30 +13,39 @@ These are portable applications, not the Windows Setup installer. Read START_HER
 
 Download the management application's Linux deployment kits from [GitHub Releases](https://github.com/JackKelley805/TKCM_Releases/releases).
 
-## Version 0.1.0
+## Management Application v0.1.1
 
-- [Linux `.tar.gz` deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.0/management_application-0.1.0.tar.gz)
-- [ZIP deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.0/management_application-0.1.0.zip)
-- [SHA256 checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.0/SHA256SUMS)
-- [Release manifest](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.0/RELEASE-MANIFEST.json)
+- [Linux `.tar.gz` deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/management_application-0.1.1.tar.gz)
+- [ZIP deployment kit](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/management_application-0.1.1.zip)
+- [SHA256 checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/SHA256SUMS)
+- [Release manifest](https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/RELEASE-MANIFEST.json)
 
-The kit contains the combined management application's source, Linux installer, Docker/Compose files, RDS configuration example, and setup documentation. Docker builds the application on the server; no host .NET SDK is required.
+The kit contains the combined management application's source, Linux installer, Docker/Compose files, RDS configuration example, and setup documentation. Docker builds the application on the server; no host .NET SDK is required. Version 0.1.1 adds direct license revoke/delete actions, installation-entry deletion, and timing-policy settings in hours.
 
-## Download on Linux
+## Update an existing Linux server
 
 ```bash
-mkdir -p ~/tkcm-downloads
-cd ~/tkcm-downloads
-curl --fail --location --output management_application-0.1.0.tar.gz \
-  https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.0/management_application-0.1.0.tar.gz
-curl --fail --location --output SHA256SUMS \
-  https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.0/SHA256SUMS
-sha256sum --check --ignore-missing SHA256SUMS
-tar -xzf management_application-0.1.0.tar.gz
-cd management_application-0.1.0
+(
+  set -euo pipefail
+  management_install_dir=/opt/management_application
+  update_dir=$(mktemp -d "$HOME/tkcm-management-update.XXXXXX")
+  cd "$update_dir"
+  curl --fail --location --output management_application-0.1.1.tar.gz \
+    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/management_application-0.1.1.tar.gz'
+  curl --fail --location --output SHA256SUMS \
+    'https://github.com/JackKelley805/TKCM_Releases/releases/download/v0.1.1/SHA256SUMS'
+  sha256sum --check --ignore-missing SHA256SUMS
+  tar -xzf management_application-0.1.1.tar.gz
+  cd management_application-0.1.1
+  sudo test -f "$management_install_dir/.management-install"
+  sudo bash install.sh --install-dir "$management_install_dir"
+  sudo docker compose --env-file "$management_install_dir/.env" --project-directory "$management_install_dir" -f "$management_install_dir/compose.yaml" ps
+)
 ```
 
-Read the extracted `README.md` and `RELEASE-INFO.md`. Prepare a dedicated MySQL/RDS database, private password file, and CA certificate, then run:
+These commands use the default managed installation directory, `/opt/management_application`; substitute your existing directory if different. The installer retains saved settings, database mode, accounts/passwords, licenses, policy durations, and signing/authentication keys. Updating does not require entering credentials again.
+
+For a fresh server, read the extracted `README.md` and `RELEASE-INFO.md`. Prepare a dedicated MySQL/RDS database, private password file, and CA certificate, then run:
 
 ```bash
 sudo bash install.sh --database external \
