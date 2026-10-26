@@ -1,4 +1,15 @@
-# TKCM management application releases
+# TKCM application releases
+
+## Compliance Board v1.2.0
+
+The compliance application now connects to the management server for licensing, heartbeats and manual update checks.
+
+- [Release notes and downloads](https://github.com/JackKelley805/TKCM_Releases/releases/tag/compliance-v1.2.0)
+- [Windows x64 portable ZIP](https://github.com/JackKelley805/TKCM_Releases/releases/download/compliance-v1.2.0/ComplianceBoard-1.2.0-windows-x64.zip)
+- [Linux x64 portable archive](https://github.com/JackKelley805/TKCM_Releases/releases/download/compliance-v1.2.0/ComplianceBoard-1.2.0-linux-x64.tar.gz)
+- [Client checksums](https://github.com/JackKelley805/TKCM_Releases/releases/download/compliance-v1.2.0/SHA256SUMS)
+
+These are portable applications, not the Windows Setup installer. Read START_HERE.txt inside the archive. Preserve existing configuration and data when updating. After signing in, activate under **License & updates** using a `compliance-board` product license from your management server. All four management timing settings must be configured. No private credentials or compliance data are bundled.
 
 Download the management application's Linux deployment kits from [GitHub Releases](https://github.com/JackKelley805/TKCM_Releases/releases).
 
